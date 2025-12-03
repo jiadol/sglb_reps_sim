@@ -56,13 +56,21 @@ class Link:
             pkt = (yield self.store.get())
             size_bits = pkt.size_bytes * 8.0
             service_time = size_bits / self.capacity_bps if self.capacity_bps > 0 else 0.0
+            
             self.busy_time += service_time
-            yield self.env.timeout(service_time + self.prop_delay)
+            
+            yield self.env.timeout(service_time)
+            
             self._update_queue_area()
             self.queue_len_bytes -= pkt.size_bytes
             if self.queue_len_bytes < 0:
                 self.queue_len_bytes = 0
-            self.forward(pkt)
+                
+            self.env.process(self._deliver_packet(pkt))
+    
+    def _deliver_packet(self, pkt):
+        yield self.env.timeout(self.prop_delay)
+        self.forward(pkt)
 
     def finalize(self, sim_time: float):
         dt = sim_time - self.last_q_update

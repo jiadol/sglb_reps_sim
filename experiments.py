@@ -89,7 +89,7 @@ def run_scenario(lb_name: str, flow_specs: List[FlowSpec], seed: int = 1):
                     num_leaves=4,
                     num_spines=4,
                     hosts_per_leaf=4,
-                    link_capacity_gbps=100.0)
+                    link_capacity_gbps=2.5)
     sim.add_flows(flow_specs)
     stats = sim.run()
     return stats
@@ -398,7 +398,7 @@ def experiment_b2_shuffle():
                         num_leaves=4,
                         num_spines=4,
                         hosts_per_leaf=4,
-                        link_capacity_gbps=100.0)
+                        link_capacity_gbps=2.5)
         hosts = sim.topology.hosts
 
         flows = generate_all_to_all_flows(
@@ -495,7 +495,7 @@ def experiment_c_reps_plus_ladder():
                         num_leaves=4,
                         num_spines=4,
                         hosts_per_leaf=4,
-                        link_capacity_gbps=100.0)
+                        link_capacity_gbps=2.5)
         hosts = sim.topology.hosts
 
         flows = generate_random_flows(
